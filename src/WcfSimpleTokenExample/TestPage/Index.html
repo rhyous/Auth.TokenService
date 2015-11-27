@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Client</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="/Scripts/jquery-2.1.4.js"></script>
+    <script type="text/javascript" src="/Scripts/knockout-3.4.0.debug.js"></script>
+    <script type="text/javascript">
+        var ViewModel = function () {
+            var _vm = this;
+            _vm.user = ko.observable();
+            _vm.password = ko.observable();
+            _vm.basicAuth = ko.computed(function () {
+                return "Basic " + btoa(_vm.user() + ":" + _vm.password());
+            });
+            // I am just sticking the token in a local variable,
+            // but you might want to save it in a cookie.
+            _vm.token = ko.observable();
+            _vm.getResponse = ko.observable();
+            _vm.postResponse = ko.observable();
+            _vm.onAuthClick = function () {
+                $.ajax({
+                    method: "POST",
+                    url: "/Services/AuthenticationTokenService.svc/Authenticate",
+                    contentType: "application/json",
+                    context: document.body,
+                    data: JSON.stringify({
+                        User: _vm.user(),
+                        Password: _vm.password()
+                    }),
+                    success: function (data) {
+                        _vm.token(data);
+                    },
+                    failure: function (err) { alert(err.responseText); },
+                    error: function (err) { alert(err.responseText); }
+                });
+            };
+            _vm.onTestGetWithTokenClick = function () {
+                $.ajax({
+                    url: "/Services/Test1Service.svc/TestGet",
+                    contentType: "application/json",
+                    context: document.body,
+                    beforeSend: function (request) { request.setRequestHeader("Token", _vm.token()); },
+                    success: function (data) {
+                        _vm.getResponse(data);
+                    },
+                    failure: function (err) { alert(err.responseText); },
+                    error: function (err) { alert(err.responseText); }
+                });
+            };
+            _vm.onTestPostWithBasicAuthClick = function () {
+                $.ajax({
+                    method: "POST",
+                    url: "/Services/Test1Service.svc/TestPost",
+                    contentType: "application/json",
+                    context: document.body,
+                    beforeSend: function (request) { request.setRequestHeader("Authorization", _vm.basicAuth()); },
+                    success: function (data) {
+                        _vm.postResponse(data);
+                    },
+                    failure: function (err) { alert(err.responseText); },
+                    error: function (err) { alert(err.responseText); }
+                });
+            };
+        };
+        $(function () {
+            ko.applyBindings(new ViewModel());
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <input type="text" data-bind="value: user" placeholder="Enter your username here . . ." />
+        <input type="password" data-bind="value: password" placeholder="Enter your password here . . ." />
+        <input type="button" value="Authenticate" data-bind="click: onAuthClick" />
+    </div>
+    <p>Token: <span data-bind="text: token"></span></p>
+    <input type="button" value="Test Get w/ Token" data-bind="click: onTestGetWithTokenClick" />
+    <p>Test Get Response: <span data-bind="text: getResponse"></span></p>
+    <input type="button" value="Test Post w/ Basic Auth" data-bind="click: onTestPostWithBasicAuthClick" />
+    <p>Test Post Response: <span data-bind="text: postResponse"></span></p>
+</body>
+</html>
