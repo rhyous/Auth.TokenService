@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Configuration;
+using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
@@ -7,15 +8,21 @@ using Rhyous.Auth.TokenService.Business;
 using Rhyous.Auth.TokenService.Database;
 using Rhyous.Auth.TokenService.Interfaces;
 using Rhyous.Auth.TokenService.Services;
+using Rhyous.Extensions;
 
 namespace Rhyous.Auth.TokenService.Behaviors
 {
     public class TokenValidationInspector : IDispatchMessageInspector
     {
+        public static readonly string AllowAnonymousSvcPages = "AllowAnonymousSvcPages";
+        public static readonly string AllowAnonymousSvcHelpPages = "AllowAnonymousSvcHelpPages";
         public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
         {
             // Return BadRequest if request is null
             if (WebOperationContext.Current == null) { throw new WebFaultException(HttpStatusCode.BadRequest); }
+
+            if (IsAnonymousAllowed(request.Headers.To.AbsolutePath))
+                return null;
 
             // Get Token from header
             var token = WebOperationContext.Current.IncomingRequest.Headers["Token"];
@@ -28,6 +35,14 @@ namespace Rhyous.Auth.TokenService.Behaviors
                 ValidateBasicAuthentication();
             }
             return null;
+        }
+
+        private static bool IsAnonymousAllowed(string absolutePath)
+        {
+            return (ConfigurationManager.AppSettings.Get(AllowAnonymousSvcPages, true)
+                    && absolutePath.EndsWith(".svc"))
+                   || (ConfigurationManager.AppSettings.Get(AllowAnonymousSvcPages, true)
+                       && absolutePath.Contains("/help"));
         }
 
         private static void ValidateToken(string token)

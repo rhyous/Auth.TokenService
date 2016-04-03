@@ -97,6 +97,7 @@
     <Compile Include="Database\BasicTokenDbContext.cs" />
     <Compile Include="Database\Token.cs" />
     <Compile Include="Database\User.cs" />
+    <Compile Include="Extensions\NameValueCollectionExtensions.cs" />
     <Compile Include="Interfaces\IAuthenticationTokenService.cs" />
     <Compile Include="Interfaces\ICredentialsValidator.cs" />
     <Compile Include="Interfaces\ITokenBuilder.cs" />
