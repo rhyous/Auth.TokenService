@@ -40,14 +40,14 @@ namespace Rhyous.Auth.TokenService.Behaviors
                     throw new WebFaultException(HttpStatusCode.Forbidden);
                 }
                 // Add User ids to the header so the service has them if needed
-                WebOperationContext.Current.IncomingRequest.Headers.Add("User", validator.Token.User.Username);
-                WebOperationContext.Current.IncomingRequest.Headers.Add("UserId", validator.Token.User.Id.ToString());
+                WebOperationContext.Current?.IncomingRequest.Headers.Add("User", validator.Token.User.Username);
+                WebOperationContext.Current?.IncomingRequest.Headers.Add("UserId", validator.Token.User.Id.ToString());
             }
         }
 
         private static void ValidateBasicAuthentication()
         {
-            var authorization = WebOperationContext.Current.IncomingRequest.Headers["Authorization"];
+            var authorization = WebOperationContext.Current?.IncomingRequest.Headers["Authorization"];
             if (string.IsNullOrWhiteSpace(authorization))
             {
                 throw new WebFaultException(HttpStatusCode.Forbidden);
