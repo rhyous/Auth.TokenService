@@ -41,7 +41,7 @@ namespace Rhyous.Auth.TokenService.Behaviors
         {
             return (ConfigurationManager.AppSettings.Get(AllowAnonymousSvcPages, true)
                     && absolutePath.EndsWith(".svc"))
-                   || (ConfigurationManager.AppSettings.Get(AllowAnonymousSvcPages, true)
+                   || (ConfigurationManager.AppSettings.Get(AllowAnonymousSvcHelpPages, true)
                        && absolutePath.Contains("/help"));
         }
 
