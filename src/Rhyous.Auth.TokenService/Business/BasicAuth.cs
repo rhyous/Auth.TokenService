@@ -19,7 +19,7 @@ namespace Rhyous.Auth.TokenService.Business
         public BasicAuth(string encodedHeader, Encoding encoding)
         {
             HeaderValue = encodedHeader;
-            var decodedHeader = encodedHeader.StartsWith(Prefix)
+            var decodedHeader = encodedHeader.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase)
                 ? encoding.GetString(Convert.FromBase64String(encodedHeader.Substring(Prefix.Length)))
                 : encoding.GetString(Convert.FromBase64String(encodedHeader));
             var credArray = decodedHeader.Split(':');
