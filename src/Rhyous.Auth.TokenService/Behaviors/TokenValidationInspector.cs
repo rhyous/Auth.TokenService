@@ -5,7 +5,6 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
 using Rhyous.Auth.TokenService.Business;
-using Rhyous.Auth.TokenService.Database;
 using Rhyous.Auth.TokenService.Interfaces;
 using Rhyous.Auth.TokenService.Services;
 using Rhyous.Extensions;
@@ -47,17 +46,14 @@ namespace Rhyous.Auth.TokenService.Behaviors
 
         private static void ValidateToken(string token)
         {
-            using (var dbContext = new BasicTokenDbContext())
+            ITokenValidator validator = new PluginTokenValidator();
+            if (!validator.IsValid(token))
             {
-                ITokenValidator validator = new DatabaseTokenValidator(dbContext);
-                if (!validator.IsValid(token))
-                {
-                    throw new WebFaultException(HttpStatusCode.Forbidden);
-                }
-                // Add User ids to the header so the service has them if needed
-                WebOperationContext.Current?.IncomingRequest.Headers.Add("User", validator.Token.User.Username);
-                WebOperationContext.Current?.IncomingRequest.Headers.Add("UserId", validator.Token.User.Id.ToString());
+                throw new WebFaultException(HttpStatusCode.Forbidden);
             }
+            // Add User ids to the header so the service has them if needed
+            WebOperationContext.Current?.IncomingRequest.Headers.Add("User", validator.Token.User.Username);
+            WebOperationContext.Current?.IncomingRequest.Headers.Add("UserId", validator.Token.User.Id.ToString());
         }
 
         private static void ValidateBasicAuthentication()

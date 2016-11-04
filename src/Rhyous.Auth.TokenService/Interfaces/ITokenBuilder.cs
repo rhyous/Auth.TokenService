@@ -1,9 +1,10 @@
-﻿using Rhyous.Auth.TokenService.Model;
+﻿using Rhyous.Auth.TokenService.Interface;
+using Rhyous.Auth.TokenService.Model;
 
 namespace Rhyous.Auth.TokenService.Interfaces
 {
-    interface ITokenBuilder
+    public interface ITokenBuilder
     {
-        string Build(Credentials creds);
+        IToken Build(Credentials creds);
     }
 }

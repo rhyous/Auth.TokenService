@@ -1,10 +1,10 @@
-﻿using System.ServiceModel;
-using System.ServiceModel.Activation;
-using System.ServiceModel.Web;
-using Rhyous.Auth.TokenService.Business;
-using Rhyous.Auth.TokenService.Database;
+﻿using Rhyous.Auth.TokenService.Business;
+using Rhyous.Auth.TokenService.Interface;
 using Rhyous.Auth.TokenService.Interfaces;
 using Rhyous.Auth.TokenService.Model;
+using System.Security.Authentication;
+using System.ServiceModel.Activation;
+using System.ServiceModel.Web;
 
 namespace Rhyous.Auth.TokenService.Services
 {
@@ -19,10 +19,12 @@ namespace Rhyous.Auth.TokenService.Services
                 if (!string.IsNullOrWhiteSpace(basicAuthHeader))
                     creds = new BasicAuth(basicAuthHeader).Creds;
             }
-            using (var dbContext = new BasicTokenDbContext())
-            {
-                return new DatabaseTokenBuilder(dbContext).Build(creds);
-            }
+            var credsValidator = new PluginCredentialsValidator();
+            IToken token;
+            if (credsValidator.IsValid(creds, out token))
+                return token.Text;
+            else
+                throw new AuthenticationException();
         }
     }
 }

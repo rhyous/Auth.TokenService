@@ -1,10 +1,10 @@
-﻿using Rhyous.Auth.TokenService.Database;
+﻿using Rhyous.Auth.TokenService.Interface;
 
 namespace Rhyous.Auth.TokenService.Interfaces
 {
     public interface ITokenValidator
     {
         bool IsValid(string token);
-        Token Token { get; set; }
+        IToken Token { get; set; }
     }
 }
