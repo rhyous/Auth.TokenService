@@ -196,5 +196,5 @@ FakesAssemblies/
 *.opt
 
 
-[Aa]pp_[Ppackages]/
-[Pp]lugins/
+src/Rhyous.Auth.TokenService/[Aa]pp_[Ppackages]/
+src/Rhyous.Auth.TokenService/[Pp]lugins/
