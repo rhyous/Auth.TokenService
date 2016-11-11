@@ -1,18 +1,12 @@
-﻿using System.Collections.ObjectModel;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
+﻿using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
 namespace Rhyous.Auth.TokenService.Behaviors
 {
-    public class TokenValidationServiceBehavior : IServiceBehavior
+    public class TokenValidationServiceBehavior : ServiceBehaviorBase
     {
-        public void AddBindingParameters(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters)
-        {
-        }
-
-        public void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
+        public override void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
         {
             foreach (var t in serviceHostBase.ChannelDispatchers)
             {
@@ -25,10 +19,6 @@ namespace Rhyous.Auth.TokenService.Behaviors
                     }
                 }
             }
-        }
-
-        public void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
-        {
         }
     }
 }

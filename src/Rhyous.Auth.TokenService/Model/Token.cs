@@ -1,7 +1,7 @@
 using Rhyous.Auth.TokenService.Interface;
 using System;
 
-namespace Rhyous.Auth.TokenService.Database
+namespace Rhyous.Auth.TokenService.Model
 {
     public partial class Token : IToken
     {
@@ -12,7 +12,7 @@ namespace Rhyous.Auth.TokenService.Database
         public int UserId { get; set; }
 
         public DateTime CreateDate { get; set; }
-
+        
         public virtual IUser User { get; set; }
     }
 }

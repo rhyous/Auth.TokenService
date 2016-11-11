@@ -1,7 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rhyous.Auth.TokenService.Business;
-using Rhyous.Auth.TokenService.Database;
 using DatabaseAuthenticator;
 
 namespace Rhyous.Auth.TokenService.Tests.Business
@@ -13,7 +11,7 @@ namespace Rhyous.Auth.TokenService.Tests.Business
         public void IsExpired30Minutes1Second()
         {
             // Arrange
-            var token = new DatabaseAuthenticator.Token { CreateDate = DateTime.Now.AddSeconds(-1801) };
+            var token = new Token { CreateDate = DateTime.Now.AddSeconds(-1801) };
             var validator = new DatabaseTokenValidator(null);
 
             // Act 
@@ -27,7 +25,7 @@ namespace Rhyous.Auth.TokenService.Tests.Business
         public void IsExpired29Minutes59Second()
         {
             // Arrange
-            var token = new DatabaseAuthenticator.Token { CreateDate = DateTime.Now.AddSeconds(-1799) };
+            var token = new Token { CreateDate = DateTime.Now.AddSeconds(-1799) };
             var validator = new DatabaseTokenValidator(null);
 
             // Act 

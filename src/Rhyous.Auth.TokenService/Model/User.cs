@@ -1,7 +1,7 @@
 using Rhyous.Auth.TokenService.Interface;
 using System.Collections.Generic;
 
-namespace Rhyous.Auth.TokenService.Database
+namespace Rhyous.Auth.TokenService.Model
 {
     public partial class User : IUser
     {

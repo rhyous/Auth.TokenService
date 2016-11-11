@@ -8,6 +8,7 @@ using Rhyous.Auth.TokenService.Business;
 using Rhyous.Auth.TokenService.Interfaces;
 using Rhyous.Auth.TokenService.Services;
 using Rhyous.Extensions;
+using Rhyous.Auth.TokenService.Interface;
 
 namespace Rhyous.Auth.TokenService.Behaviors
 {
@@ -31,7 +32,7 @@ namespace Rhyous.Auth.TokenService.Behaviors
             }
             else
             {
-                ValidateBasicAuthentication();
+                ValidateBasicAuthentication();                
             }
             return null;
         }
@@ -56,7 +57,7 @@ namespace Rhyous.Auth.TokenService.Behaviors
             WebOperationContext.Current?.IncomingRequest.Headers.Add("UserId", validator.Token.User.Id.ToString());
         }
 
-        private static void ValidateBasicAuthentication()
+        private static IToken ValidateBasicAuthentication()
         {
             var authorization = WebOperationContext.Current?.IncomingRequest.Headers["Authorization"];
             if (string.IsNullOrWhiteSpace(authorization))
@@ -64,8 +65,7 @@ namespace Rhyous.Auth.TokenService.Behaviors
                 throw new WebFaultException(HttpStatusCode.Forbidden);
             }
             var basicAuth = new BasicAuth(authorization);
-            var token = new AuthenticationTokenService().Authenticate(basicAuth.Creds);
-            ValidateToken(token);
+            return new AuthenticationTokenService().Authenticate(basicAuth.Creds);
         }
 
         public void BeforeSendReply(ref Message reply, object correlationState)

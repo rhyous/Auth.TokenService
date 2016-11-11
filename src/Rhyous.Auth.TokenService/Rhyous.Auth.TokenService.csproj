@@ -130,14 +130,17 @@
     <Compile Include="..\packages\Rhyous.SimplePluginLoader.Sources.1.1.3\src\App_Packages\Rhyous.SimplePluginLoader.Sources.1.1.3\PluginPaths.cs">
       <Link>App_Packages\Rhyous.SimplePluginLoader.Sources.1.1.3\PluginPaths.cs</Link>
     </Compile>
-    <Compile Include="Behaviors\TokenValidationInspector.cs" />
     <Compile Include="Behaviors\TokenValidationBehaviorExtension.cs" />
+    <Compile Include="Behaviors\ServiceBehaviorBase.cs" />
+    <Compile Include="Behaviors\TokenValidationInspector.cs" />
+    <Compile Include="Behaviors\BehaviorExtensionBase.cs" />
     <Compile Include="Behaviors\TokenValidationServiceBehavior.cs" />
     <Compile Include="Business\BasicAuth.cs" />
     <Compile Include="Business\PluginCredentialsValidator.cs" />
     <Compile Include="Business\PluginLoaderBase.cs" />
     <Compile Include="Business\Hash.cs" />
     <Compile Include="Business\PluginTokenValidator.cs" />
+    <Compile Include="Extensions\ConcreteConverter.cs" />
     <Compile Include="Interfaces\IToken.cs" />
     <Compile Include="Interfaces\IUser.cs" />
     <Compile Include="Model\Token.cs" />

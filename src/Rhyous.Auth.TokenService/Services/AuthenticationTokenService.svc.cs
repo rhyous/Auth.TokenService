@@ -1,4 +1,5 @@
 ﻿using Rhyous.Auth.TokenService.Business;
+using Rhyous.Auth.TokenService.Extensions;
 using Rhyous.Auth.TokenService.Interface;
 using Rhyous.Auth.TokenService.Interfaces;
 using Rhyous.Auth.TokenService.Model;
@@ -11,7 +12,7 @@ namespace Rhyous.Auth.TokenService.Services
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class AuthenticationTokenService : IAuthenticationTokenService
     {
-        public string Authenticate(Credentials creds)
+        public Token Authenticate(Credentials creds)
         {
             if (creds == null && WebOperationContext.Current != null)
             {
@@ -22,9 +23,9 @@ namespace Rhyous.Auth.TokenService.Services
             var credsValidator = new PluginCredentialsValidator();
             IToken token;
             if (credsValidator.IsValid(creds, out token))
-                return token.Text;
+                return token.ToConcrete<Token>();
             else
-                throw new AuthenticationException();
+                throw new AuthenticationException("Invalid credentials.");
         }
     }
 }

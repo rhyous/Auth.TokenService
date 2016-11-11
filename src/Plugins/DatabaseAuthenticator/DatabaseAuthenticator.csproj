@@ -114,7 +114,8 @@ IF NOT EXIST %25dllDir%25 MKDIR %25dllDir%25
 COPY /Y "$(Targetdir)*.dll" %25dllDir%25
 COPY /Y "$(Targetdir)*.pdb" %25dllDir%25
 
-COPY /Y "$(ProjectDir)App_Data\*df" "$(SolutionDir)Rhyous.Auth.TokenService\App_Data\"</PostBuildEvent>
+REM COPY /Y "$(ProjectDir)App_Data\*.mdf" "$(SolutionDir)Rhyous.Auth.TokenService\App_Data\"
+REM COPY /Y "$(ProjectDir)App_Data\*.ldf" "$(SolutionDir)Rhyous.Auth.TokenService\App_Data\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
